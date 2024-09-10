@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 // import { useAuthStore } from "@/stores/authStore";
 
-// import LoginPage from "@/views/LoginPage.vue";
+import LoginPage from "@/views/LoginPage.vue";
 import HomePage from "@/views/HomePage.vue";
 // import UsersPage from "@/views/UsersPage.vue";
 
@@ -13,12 +13,12 @@ const router = createRouter({
             name: 'home',
             component: HomePage,
         },
-        // {
-        //     path: '/login',
-        //     name: 'login',
-        //     component: LoginPage,
-        //     meta: { requiresGuest: true },
-        // },
+        {
+            path: '/login',
+            name: 'login',
+            component: LoginPage,
+            // meta: { requiresGuest: true },
+        },
         // {
         //     path: '/users',
         //     name: 'users',

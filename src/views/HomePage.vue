@@ -39,34 +39,16 @@
                                 </div>
                                 <div class="h-2/3">
                                     <h1 class="text-white font-bold text-3xl p-6 pb-3">Applications</h1>
-                                    <div class="w-full h-[calc(100%-84px)] flex flex-wrap gap-6 overflow-y-auto px-6 pt-3">
-
-                                        
-                                        <a href="#" class="w-48 h-56 bg-neutral-200 shadow shadow-neutral-900 rounded-lg gap-y-2 relative overflow-hidden hover:scale-[102%]">
-                                            <div :class="['w-full h-full bg-gray-400 absolute z-50 transition-all duration-500', infoVisible == 1 ? 'top-0' : 'top-full']">
-                                                <div class="group absolute top-3 right-3 text-neutral-600 hover:text-neutral-700 transition-all duration-300">
-                                                    <iconClose class="w-8 h-8" @click="toggleInfo(null)"></iconClose>
-                                                </div>
-                                                <div class="p-6 text-xs overflow-y-auto h-full">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                                                </div>
+                                    <div class="w-full h-[calc(100%-84px)] flex flex-wrap gap-6 overflow-y-auto px-6 pt-3 relative">
+                                        <!-- Loading -->
+                                            <div v-if="!isLoaded" class="absolute left-1/2 top-1/3 z-50 -translate-x-1/2">
+                                                <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-600 animate-spin"></div>
                                             </div>
-                                            <div class="w-full h-full p-[10px] z-40">
-                                                <div class="group absolute top-3 right-3 text-neutral-400 hover:text-neutral-200 transition-all duration-300">
-                                                    <iconInfo class="w-8 h-8" @click="toggleInfo(1)"></iconInfo>
-                                                </div>
-                                                <div class="w-full aspect-square flex items-center justify-center rounded-xl">
-                                                    <img :src="train" alt="" class="aspect-square shadow shadow-gray-500 rounded-lg">
-                                                </div>
-                                                <div class="w-full h-[calc(100%-162px)] flex items-center overflow-hidden">
-                                                    <h1 class="font-bold text-gray-700 text-center text-sm w-full whitespace-nowrap">{{truncateSentence('Training Scheduling System')}}</h1>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        
+                                        <!-- Loading -->
 
-
-
+                                        <!-- App List -->
+                                            <AppList v-for="app in collection" :key="app.id" :app="app"></AppList>
+                                        <!-- App List -->
                                     </div>
                                 </div>
                             </div>
@@ -74,36 +56,53 @@
                             <!-- <img :src="flBg" alt="" class="absolute z-20 top-1/2 -translate-y-1/2 blur"> -->
                         </div>
                     </div>
-
-
-
-                    <!-- <div class="w-full h-3/5 pt-3 space-y-8">
-                        <div class=" w-full h-full p-6 flex flex-wrap gap-6 overflow-y-auto">
-                            <a href="#" class="h-48 aspect-square flex flex-col items-center justify-center bg-pink-300 rounded-lg shadow-lg hover:scale-105 gap-y-2">
-                                <h1 class="font-bold text-gray-600 text-center px-6 text-sm">IT TICKETING SYSTEM</h1>
-                                <img :src="ytLogo" alt="" class="w-16">
-                            </a>
-                        </div>
-                    </div> -->
                 </div>
             </div>
-        </div>
+        </div > 
     </div>
 </template>
 
-<script setup>
-    import { ref } from 'vue'
+<script setup> 
+    import { onMounted, ref } from 'vue';
 
-    import logo from '@/assets/logo.png'
-    import fbLogo from '@/assets/fb-logo.png'
-    import ytLogo from '@/assets/yt-logo.png'
-    import webLogo from '@/assets/web-logo.png'
-    import header from '@/assets/NHEADER.png'
-    import flBg from '@/assets/NFL-BG.png'
-    import train from '@/assets/BBB.jpg'
-    import Tooltip from '@/components/Tooltip.vue'
-    import iconInfo from '@/components/icons/iconInfo.vue'
-    import iconClose from '@/components/icons/iconClose.vue'
+    import logo from '@/assets/logo.png';
+    import fbLogo from '@/assets/fb-logo.png';
+    import ytLogo from '@/assets/yt-logo.png';
+    import webLogo from '@/assets/web-logo.png';
+    import header from '@/assets/NHEADER.png';
+    import Tooltip from '@/components/Tooltip.vue';
+    import AppList from '@/components/modules/home/AppList.vue';
+
+    import { appListIndex } from '@/http/applist-api';
+    
+    import axios from '@/axios.js'
+
+    // Variables
+        const collection = ref([]);
+        const isLoaded = ref(false);
+        const errors = ref({});
+
+    onMounted(async (url) => {
+        collection.value = [];
+        try {
+            const response = url ? await axios.get(url) : await appListIndex();
+            collection.value = response.data.data;
+        } catch (error) {
+            // if (error.response) {
+            //     if (error.response.status === 422) {
+            //         errors.value = error.response.data.errors || {};
+            //     } else if(error.response.status === 401) {
+            //         authStore.logout();
+            //     } else {
+            //         errors.value = 'An unexpected error occurred. Please try again later.';
+            //     }
+            // } else {
+                errors.value = 'An unexpected error occurred. Please try again later.';
+            // }
+        } finally {
+            isLoaded.value = true;
+        }
+    });
 
     const infoVisible = ref(false);
 
