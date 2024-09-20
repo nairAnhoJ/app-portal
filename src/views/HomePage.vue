@@ -1,11 +1,11 @@
 <template>
     <div class="w-screen h-screen">
         <div class="flex h-full p-4 pl-6">
-            <div class="w-20 h-full bg-transparent flex flex-col p-3">
+            <div class="w-20 h-full bg-transparent flex flex-col p-3 justify-between">
                 <div class="w-full aspect-square flex items-center justify-center"><img :src="logo" alt="logo" class="w-12"></div>
                 <!-- filter invert brightness-0 grayscale -->
 
-                <div class="mt-12 space-y-6">
+                <div class="space-y-6">
                     <a href="https://www.facebook.com/ToyotaForkliftsPhilippines" target="_blank" class="group relative w-full aspect-square flex items-center justify-center bg-gray-100 rounded-lg shadow-lg shadow-gray-400 hover:scale-105 border z-50">
                         <div>
                             <img :src="fbLogo" alt="fb_logo" class="w-9">
@@ -24,6 +24,15 @@
                         </div>
                         <Tooltip tooltipText='Website'></Tooltip>
                     </a>
+                </div>
+                
+                <button v-if="authStore.token"  @click="authStore.logout" class="group relative w-full aspect-square flex items-center justify-center bg-white rounded-lg shadow-lg shadow-gray-400 hover:scale-105 border z-50 text-gray-600 p-2">
+                    <iconLogout></iconLogout>
+                    <Tooltip tooltipText='Logout'></Tooltip>
+                </button>
+
+                <div v-if="!authStore.token" class="w-full aspect-square">
+
                 </div>
             </div>
 
@@ -64,12 +73,14 @@
 
 <script setup> 
     import { onMounted, ref } from 'vue';
+    import { useAuthStore } from '@/stores/authStore';
 
     import logo from '@/assets/logo.png';
     import fbLogo from '@/assets/fb-logo.png';
     import ytLogo from '@/assets/yt-logo.png';
     import webLogo from '@/assets/web-logo.png';
     import header from '@/assets/NHEADER.png';
+    import iconLogout from '@/components/icons/iconLogout.vue';
     import Tooltip from '@/components/Tooltip.vue';
     import AppList from '@/components/modules/home/AppList.vue';
 
@@ -78,6 +89,7 @@
     import axios from '@/axios.js'
 
     // Variables
+        const authStore = useAuthStore();
         const collection = ref([]);
         const isLoaded = ref(false);
         const errors = ref({});
@@ -88,17 +100,7 @@
             const response = url ? await axios.get(url) : await appListIndex();
             collection.value = response.data.data;
         } catch (error) {
-            // if (error.response) {
-            //     if (error.response.status === 422) {
-            //         errors.value = error.response.data.errors || {};
-            //     } else if(error.response.status === 401) {
-            //         authStore.logout();
-            //     } else {
-            //         errors.value = 'An unexpected error occurred. Please try again later.';
-            //     }
-            // } else {
-                errors.value = 'An unexpected error occurred. Please try again later.';
-            // }
+            errors.value = 'An unexpected error occurred. Please try again later.';
         } finally {
             isLoaded.value = true;
         }
