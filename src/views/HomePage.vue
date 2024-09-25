@@ -25,14 +25,22 @@
                         <Tooltip tooltipText='Website'></Tooltip>
                     </a>
                 </div>
-                
-                <button v-if="authStore.token"  @click="authStore.logout" class="group relative w-full aspect-square flex items-center justify-center bg-white rounded-lg shadow-lg shadow-gray-400 hover:scale-105 border z-50 text-gray-600 p-2">
-                    <iconLogout></iconLogout>
-                    <Tooltip tooltipText='Logout'></Tooltip>
-                </button>
+                <div v-if="authStore.token" class="space-y-3">
+                    <RouterLink to="/settings" class="group relative w-full aspect-square flex items-center justify-center bg-white rounded-lg shadow-lg shadow-gray-400 hover:scale-105 border z-50 text-gray-600 p-2">
+                        <iconSettings></iconSettings>
+                        <Tooltip tooltipText='Settings'></Tooltip>
+                    </RouterLink>
+                    <button @click="authStore.logout" class="group relative w-full aspect-square flex items-center justify-center bg-white rounded-lg shadow-lg shadow-gray-400 hover:scale-105 border z-50 text-gray-600 p-2">
+                        <iconLogout></iconLogout>
+                        <Tooltip tooltipText='Logout'></Tooltip>
+                    </button>
+                </div>
 
-                <div v-if="!authStore.token" class="w-full aspect-square">
-
+                <div v-if="!authStore.token">
+                    <RouterLink to="/login" class="group relative w-full aspect-square flex items-center justify-center bg-white rounded-lg shadow-lg shadow-gray-400 hover:scale-105 border z-50 text-gray-600 p-2">
+                        <iconLogin></iconLogin>
+                        <Tooltip tooltipText='Login'></Tooltip>
+                    </RouterLink>
                 </div>
             </div>
 
@@ -73,6 +81,7 @@
 
 <script setup> 
     import { onMounted, ref } from 'vue';
+    import { RouterLink } from 'vue-router';
     import { useAuthStore } from '@/stores/authStore';
 
     import logo from '@/assets/logo.png';
@@ -80,6 +89,8 @@
     import ytLogo from '@/assets/yt-logo.png';
     import webLogo from '@/assets/web-logo.png';
     import header from '@/assets/NHEADER.png';
+    import iconSettings from '@/components/icons/iconSettings.vue';
+    import iconLogin from '@/components/icons/iconLogin.vue';
     import iconLogout from '@/components/icons/iconLogout.vue';
     import Tooltip from '@/components/Tooltip.vue';
     import AppList from '@/components/modules/home/AppList.vue';

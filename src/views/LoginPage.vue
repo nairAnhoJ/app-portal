@@ -23,15 +23,18 @@
                 <p v-if="authStore.errors.password" class="text-sm text-red-500 text-left">{{ authStore.errors.password[0] }}</p>
 
                 <button type="submit" class="w-64 mt-6 bg-red-500 py-2 text-sm font-bold text-white tracking-wide rounded-full shadow-lg shadow-neutral-900 hover:bg-red-600">SIGN IN</button>
+
+                <RouterLink to="/" class="w-64 mt-2 bg-gray-300 py-2 text-sm font-bold text-neutral-600 text-center tracking-wide rounded-full shadow-lg shadow-neutral-900 hover:bg-neutral-400">BACK</RouterLink>
             </form>
         </div>
     </div>
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { ref } from 'vue'; 
     import { useAuthStore } from '@/stores/authStore';
     import logo from '@/assets/logo.png';
+    import { RouterLink } from 'vue-router';
 
     const authStore = useAuthStore();
     const username = ref('');
