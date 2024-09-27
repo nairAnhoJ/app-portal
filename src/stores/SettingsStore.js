@@ -29,6 +29,16 @@ export const useSettingsStore = defineStore('settings', () => {
                 console.log(error.response);
             }
         }
+        
+        async function update(id, app){
+            try {
+                const response = await axios.put(`${resource}/${id}`, app);
+                console.log(response.data);
+                // item.value = response.data.data;
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
     // ACTION
 
 

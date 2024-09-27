@@ -1,12 +1,18 @@
 <template>
-    <div class="h-screen w-screen p-6">
-        <ShowApp v-if="showAppModal" :item="item" @close="showAppModal = false"></ShowApp>
+    <div class="h-screen w-screen p-6 relative">
+        <Loading v-if="showLoading"></Loading>
+        <ShowApp v-if="showAppModal" :item="item" @closeShowModal="showAppModal = false" :setLoading="setLoading"></ShowApp>
         <div class="space-y-3">
             <h1 class="font-bold text-3xl text-neutral-700">
                 Settings
             </h1>
             <div class="space-y-1">
-                <h2 class="font-bold text-xl">App List</h2>
+                <div class="h-8 flex items-center justify-between px-2">
+                    <h2 class="font-bold text-xl">App List</h2>
+                    <button class="text-blue-500 h-full group">
+                        <iconPlusInCircle class="h-full"></iconPlusInCircle>
+                    </button>
+                </div>
                 <table class="w-full rounded-t-lg overflow-hidden">
                     <thead>
                         <tr class="bg-blue-500 text-white border-b border-neutral-300">
@@ -30,7 +36,6 @@
                 </table>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -38,6 +43,8 @@
     import { onMounted, ref } from 'vue';
     import { useSettingsStore } from '@/stores/SettingsStore';
     import ShowApp from '@/components/modules/settings/ShowAppModal.vue';
+    import Loading from '@/components/LoadingFullScreen.vue';
+    import iconPlusInCircle from '@/components/icons/IconPlusInCircle.vue';
 
     const SettingsStore = useSettingsStore();
     const statusName = ['Inactive', 'Active', 'Under Maintenance'];
@@ -45,6 +52,7 @@
     const isLoaded = ref(false);
 
     const showAppModal = ref(false);
+    const showLoading = ref(false);
     const item = ref({});
 
     onMounted(async () => {
@@ -52,10 +60,16 @@
         isLoaded.value = true;
     });
 
+    function setLoading(isLoading) {
+    showLoading.value = isLoading;
+    }
+
     async function showItemModal(id){
+        showLoading.value = true;
         await SettingsStore.show(id);
         item.value = SettingsStore.item;
         showAppModal.value = true;
+        showLoading.value = false;
         console.log(item);
     }
 </script>
