@@ -49,6 +49,19 @@ export const useSettingsStore = defineStore('settings', () => {
                 errors.value = error.response;
             }
         }
+        
+        async function destroy(id){
+            console.log(id);
+            
+            try {
+                const response = await axios.delete(`${resource}/${id}`);
+                console.log(response);
+                
+                item.value = id;
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
     // ACTION
 
 
@@ -58,6 +71,7 @@ export const useSettingsStore = defineStore('settings', () => {
             show,
             store,
             update,
+            destroy,
             collection,
             item,
             errors

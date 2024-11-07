@@ -1,15 +1,20 @@
 <template>
     <div class="h-screen w-screen bg-gray-700 bg-opacity-60 fixed top-0 left-0 z-[90] flex items-center justify-center">
         <EditAppModal v-if="showEditModal" :item="item" @update-item="handleUpdate" @show-alert="handleAlert" @close-edit-modal="showEditModal = false" :set-loading="setLoading"></EditAppModal>
+        <DeleteAppModal v-if="showDeleteModal" :item="item" @delete-item="handleDelete" @show-alert="handleAlert" @close-delete-modal="showDeleteModal = false" :set-loading="setLoading"></DeleteAppModal>
         <div class="w-[800px] bg-gray-50 rounded-lg">
             <div class="p-5 flex items-center justify-between border-b border-gray-300">
                 <div class="font-bold text-2xl text-gray-600">
                     {{ item.name }}
                 </div>
-                <div>
-                    <button type="button" @click="showEditAppModal()" class="w-8 flex items-center hover:scale-105 group">
+                <div class="flex gap-x-1">
+                    <button type="button" @click="showEditAppModal" class="w-8 flex items-center hover:scale-105 group">
                         <IconEdit class="w-7 h-7 text-blue-500"></IconEdit>
                         <Tooltip tooltipText='Edit'></Tooltip>
+                    </button>
+                    <button type="button" @click="showDeleteAppModal" class="w-8 flex items-center hover:scale-105 group">
+                        <IconDelete class="w-7 h-7 text-red-500"></IconDelete>
+                        <Tooltip tooltipText='Delete'></Tooltip>
                     </button>
                 </div>
             </div>
@@ -43,14 +48,17 @@
 <script setup>
     import { ref } from 'vue';
     import IconEdit from '@/components/icons/IconEdit.vue';
+    import IconDelete from '@/components/icons/IconDelete.vue';
     import Tooltip from '@/components/Tooltip.vue';
     import EditAppModal from './EditAppModal.vue';
+    import DeleteAppModal from './DeleteAppModal.vue';
     import Loading from '@/components/LoadingFullScreen.vue';
 
     const statusName = ['Inactive', 'Active', 'Under Maintenance'];
     const statusColor = ['text-red-500', 'text-green-500', 'text-amber-500'];
 
     const showEditModal = ref(false);
+    const showDeleteModal = ref(false);
     const showLoading = ref(false);
 
     const props = defineProps({
@@ -58,11 +66,17 @@
         setLoading: Function,
     });
 
-    const emit = defineEmits(['updateRow', 'closeShowModal', 'showAlert']);
+    const emit = defineEmits(['deleteRow', 'closeShowModal', 'showAlert']);
 
-    async function showEditAppModal(){
+    function showEditAppModal(){
         props.setLoading(true);
         showEditModal.value = true;
+        props.setLoading(false);
+    }
+
+    function showDeleteAppModal(){
+        props.setLoading(true);
+        showDeleteModal.value = true;
         props.setLoading(false);
     }
 
@@ -70,6 +84,9 @@
         emit('updateRow', updatedItem);
     }
 
+    function handleDelete(deleteID){
+        emit('deleteRow', deleteID);
+    }
     function handleAlert(alertMessage){
         console.log(alertMessage);
         

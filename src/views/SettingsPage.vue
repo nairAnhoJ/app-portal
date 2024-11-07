@@ -2,7 +2,7 @@
     <div class="h-screen w-screen p-6 relative">
         <Loading v-if="showLoading"></Loading>
         <Alert v-if="showAlert" @click="showAlert = false" :message="message"></Alert>
-        <ShowApp v-if="showAppModal" :item="item" @close-show-modal="showAppModal = false" :set-loading="setLoading" @update-row="handleUpdate" @show-alert="handleAlert"></ShowApp>
+        <ShowApp v-if="showAppModal" :item="item" @close-show-modal="showAppModal = false" :set-loading="setLoading" @update-row="handleUpdate" @delete-row="handleDelete" @show-alert="handleAlert"></ShowApp>
         <AddApp  v-if="showAddModal" :set-loading="setLoading" @close-add-modal="showAddModal = false" @add-item="handleAdd" @show-alert="handleAlert"></AddApp>
         <div class="space-y-3">
             <h1 class="font-bold text-3xl text-neutral-700">
@@ -15,27 +15,40 @@
                         <iconPlusInCircle class="h-full"></iconPlusInCircle>
                     </button>
                 </div>
-                <table class="w-full rounded-t-lg overflow-hidden">
-                    <thead>
-                        <tr class="bg-blue-500 text-white border-b border-neutral-300">
-                            <th class="text-left text-xl p-2">Name</th>
-                            <th class="text-xl w-96">Status</th>
-                            <!-- <th class="text-xl w-96">Action</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-if="!isLoaded">
-                            <th class="text-center p-2" colspan="3">
-                                Loading...
-                            </th>
-                        </tr>
-                        <tr v-for="item in SettingsStore.collection" :key="item.id" @click="showItemModal(item.id)" class="border-b border-neutral-300 cursor-pointer hover:bg-gray-200">
-                            <th class="text-left p-2">{{ item.name }}</th>
-                            <td class="justify-center flex items-center p-2 w-96"><p :class="statusColor[item.status]" class="rounded-full px-4 font-semibold">{{ statusName[item.status] }}</p></td>
-                            <!-- <td class="text-center w-96">EDIT | DELETE</td> -->
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="relative h-96 overflow-hidden">
+                    <div class="absolute pr-[10px] w-full">
+                        <table class="w-full rounded-t-lg overflow-hidden">
+                            <thead>
+                                <tr class="bg-blue-500 text-white border-b border-neutral-300">
+                                    <th class="text-left text-xl p-2">Name</th>
+                                    <th class="text-xl w-96">Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="overflow-y-scroll max-h-[340px] rounded-t-lg mt-11">
+                        <table class="w-full rounded-t-lg">
+                            <!-- <thead>
+                                <tr class="bg-blue-500 text-white border-b border-neutral-300">
+                                    <th class="text-left text-xl px-2 py-1">Name</th>
+                                    <th class="text-xl w-96">Status</th>
+                                </tr>
+                            </thead> -->
+                            <tbody class="">
+                                <tr v-if="!isLoaded">
+                                    <th class="text-center p-2" colspan="3">
+                                        Loading...
+                                    </th>
+                                </tr>
+                                <tr v-for="item in SettingsStore.collection" :key="item.id" @click="showItemModal(item.id)" class="border-b border-neutral-300 cursor-pointer hover:bg-gray-200">
+                                    <th class="text-left p-2">{{ item.name }}</th>
+                                    <td class="justify-center flex items-center p-2 w-96"><p :class="statusColor[item.status]" class="rounded-full px-4 font-semibold">{{ statusName[item.status] }}</p></td>
+                                    <!-- <td class="text-center w-96">EDIT | DELETE</td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,6 +108,15 @@
         
         if (index != -1) {
             SettingsStore.collection[index] = updatedItem;
+        }
+        showAppModal.value = false;
+    }
+
+    async function handleDelete(deleteItem){
+        const index = SettingsStore.collection.findIndex((item) => item.id === deleteItem);
+        console.log('index: '+index);
+        if (index !== -1) {
+            SettingsStore.collection.splice(index, 1);
         }
         showAppModal.value = false;
     }
