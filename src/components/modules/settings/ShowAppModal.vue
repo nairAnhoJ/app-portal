@@ -1,6 +1,6 @@
 <template>
     <div class="h-screen w-screen bg-gray-700 bg-opacity-60 fixed top-0 left-0 z-[90] flex items-center justify-center">
-        <EditAppModal v-if="showEditModal" :item="item" @closeEditModal="showEditModal = false"></EditAppModal>
+        <EditAppModal v-if="showEditModal" :item="item" @update-item="handleUpdate" @show-alert="handleAlert" @close-edit-modal="showEditModal = false" :set-loading="setLoading"></EditAppModal>
         <div class="w-[800px] bg-gray-50 rounded-lg">
             <div class="p-5 flex items-center justify-between border-b border-gray-300">
                 <div class="font-bold text-2xl text-gray-600">
@@ -26,10 +26,10 @@
                     <h2 class="font-bold">Status</h2>
                     <p :class="statusColor[item.status]" class="text-sm font-bold">{{ statusName[item.status] }}</p>
                 </div>
-                <div class="mt-3 leading-4">
+                <!-- <div class="mt-3 leading-4">
                     <h2 class="font-bold">Clicks</h2>
                     <p class="text-sm">{{ item.clicks }}</p>
-                </div>
+                </div> -->
             </div>
             <div class="p-5">
                 <button @click="$emit('closeShowModal')" class="bg-neutral-100 hover:bg-neutral-200 border border-gray-300 text-lg text-gray-600 tracking-wide px-6 py-2 rounded-lg font-bold">
@@ -58,12 +58,21 @@
         setLoading: Function,
     });
 
-    const emit = defineEmits(['closeShowModal']);
+    const emit = defineEmits(['updateRow', 'closeShowModal', 'showAlert']);
 
     async function showEditAppModal(){
         props.setLoading(true);
         showEditModal.value = true;
         props.setLoading(false);
-        // emit('closeShowModal');
+    }
+
+    function handleUpdate(updatedItem){
+        emit('updateRow', updatedItem);
+    }
+
+    function handleAlert(alertMessage){
+        console.log(alertMessage);
+        
+        emit('showAlert', alertMessage);
     }
 </script>

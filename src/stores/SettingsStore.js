@@ -30,26 +30,37 @@ export const useSettingsStore = defineStore('settings', () => {
             }
         }
         
-        async function update(id, app){
+        async function store(app){
             try {
-                const response = await axios.put(`${resource}/${id}`, app);
-                console.log(response.data);
-                // item.value = response.data.data;
+                const response = await axios.post(`${resource}`, app);
+                item.value = response.data.data;
             } catch (error) {
                 console.log(error.response);
+                errors.value = error.response;
+            }
+        }
+        
+        async function update(id, app){
+            try {
+                const response = await axios.post(`${resource}/${id}?_method=PATCH`, app);
+                item.value = response.data.data;
+            } catch (error) {
+                console.log(error.response);
+                errors.value = error.response;
             }
         }
     // ACTION
-
-
 
 
     //  RETURN
         return {
             index,
             show,
+            store,
+            update,
             collection,
-            item
+            item,
+            errors
         };
     // RETURN
 });
