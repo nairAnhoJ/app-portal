@@ -35,7 +35,7 @@
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 border border-blue-300 text-lg text-gray-100 tracking-wide px-6 py-2 rounded-lg font-bold">
                     SAVE
                 </button>
-                <button @click="$emit('closeEditModal')" type="button"class="bg-neutral-100 hover:bg-neutral-200 border border-gray-300 text-lg text-gray-600 tracking-wide px-6 py-2 rounded-lg font-bold">
+                <button @click="$emit('closeAddModal')" type="button"class="bg-neutral-100 hover:bg-neutral-200 border border-gray-300 text-lg text-gray-600 tracking-wide px-6 py-2 rounded-lg font-bold">
                     CLOSE
                 </button>
             </div>
@@ -62,6 +62,7 @@
     const logo = ref(null);
 
     // const emit = defineEmits(['closeEditModal', 'updateItem', 'showAlert']);
+    const emit = defineEmits(['closeAddModal', 'addItem', 'showAlert']);
 
     const handleFileUpload = (event) => {
         console.log(event);
@@ -95,7 +96,10 @@
             props.setLoading(false);
         }
 
-        if (Object.keys(SettingsStore.errors).length) {
+        console.log(Object.keys(SettingsStore.errors).length);
+        
+
+        if (Object.keys(SettingsStore.errors).length > 0) {
             errors.value = 'An unexpected error occurred. Please try again later.';
             if (SettingsStore.errors.status === 422) {
                 errors.value = SettingsStore.errors.data.errors || {};
@@ -103,8 +107,10 @@
                 errors.value = 'An unexpected error occurred. Please try again later.';
             }
         }else{
-            // emit('updateItem', SettingsStore.item);
-            // emit('closeEditModal');
+            emit('addItem', SettingsStore.item);
+
+            // Close Modal
+            emit('closeAddModal');
 
             // Alert
             emit('showAlert', 'New app has been added.');

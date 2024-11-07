@@ -93,7 +93,7 @@
             props.setLoading(false);
         }
 
-        if (Object.keys(SettingsStore.errors).length) {
+        if (Object.keys(SettingsStore.errors).length > 0) {
             errors.value = 'An unexpected error occurred. Please try again later.';
             if (SettingsStore.errors.status === 422) {
                 errors.value = SettingsStore.errors.data.errors || {};

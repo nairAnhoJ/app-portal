@@ -3,7 +3,7 @@
         <Loading v-if="showLoading"></Loading>
         <Alert v-if="showAlert" @click="showAlert = false" :message="message"></Alert>
         <ShowApp v-if="showAppModal" :item="item" @close-show-modal="showAppModal = false" :set-loading="setLoading" @update-row="handleUpdate" @show-alert="handleAlert"></ShowApp>
-        <AddApp  v-if="addAppModal" :set-loading="setLoading"></AddApp>
+        <AddApp  v-if="showAddModal" :set-loading="setLoading" @close-add-modal="showAddModal = false" @add-item="handleAdd" @show-alert="handleAlert"></AddApp>
         <div class="space-y-3">
             <h1 class="font-bold text-3xl text-neutral-700">
                 Settings
@@ -56,7 +56,7 @@
     const isLoaded = ref(false);
 
     const showAppModal = ref(false);
-    const addAppModal = ref(false);
+    const showAddModal = ref(false);
     const showLoading = ref(false);
     const showAlert = ref(false);
     const message = ref();
@@ -72,7 +72,7 @@
     }
 
     function showAddAppModal() {
-        addAppModal.value = true;
+        showAddModal.value = true;
     }
 
     async function showItemModal(id){
@@ -81,6 +81,13 @@
         item.value = SettingsStore.item;
         showAppModal.value = true;
         showLoading.value = false;
+    }
+
+    function handleAdd(addItem){
+        console.log(SettingsStore.collection);
+        console.log(addItem);
+        
+        SettingsStore.collection.push(addItem);
     }
 
     function handleUpdate(updatedItem){
