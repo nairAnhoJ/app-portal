@@ -5,6 +5,10 @@
         <ShowApp v-if="showAppModal" :item="item" @close-show-modal="showAppModal = false" :set-loading="setLoading" @update-row="handleUpdate" @delete-row="handleDelete" @show-alert="handleAlert"></ShowApp>
         <AddApp  v-if="showAddModal" :set-loading="setLoading" @close-add-modal="showAddModal = false" @add-item="handleAdd" @show-alert="handleAlert"></AddApp>
         <div class="space-y-3">
+            <RouterLink to="/" class="flex items-center justify-center gap-x-1 bg-blue-500 rounded-full text-white font-bold w-[120px] h-10">
+                <iconBack class="w-7"></iconBack>
+                BACK
+            </RouterLink>
             <h1 class="font-bold text-3xl text-neutral-700">
                 Settings
             </h1>
@@ -26,7 +30,7 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="overflow-y-scroll max-h-[340px] rounded-t-lg mt-11">
+                    <div class="overflow-y-scroll max-h-[328px] rounded-t-lg mt-11">
                         <table class="w-full rounded-t-lg">
                             <!-- <thead>
                                 <tr class="bg-blue-500 text-white border-b border-neutral-300">
@@ -61,7 +65,9 @@
     import AddApp from '@/components/modules/settings/AddAppModal.vue';
     import Loading from '@/components/LoadingFullScreen.vue';
     import Alert from '@/components/Alert.vue';
-    import iconPlusInCircle from '@/components/icons/IconPlusInCircle.vue';
+    import iconPlusInCircle from '@/components/icons/iconPlusInCircle.vue';
+    import iconBack from '@/components/icons/iconBack.vue';
+    import { RouterLink } from 'vue-router';
 
     const SettingsStore = useSettingsStore();
     const statusName = ['Inactive', 'Active', 'Under Maintenance'];
@@ -76,6 +82,7 @@
     const item = ref({});
 
     onMounted(async () => {
+        SettingsStore.collection = {};
         await SettingsStore.index();
         isLoaded.value = true;
     });
@@ -112,7 +119,7 @@
         showAppModal.value = false;
     }
 
-    async function handleDelete(deleteItem){
+    function handleDelete(deleteItem){
         const index = SettingsStore.collection.findIndex((item) => item.id === deleteItem);
         console.log('index: '+index);
         if (index !== -1) {
