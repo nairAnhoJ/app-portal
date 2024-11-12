@@ -45,7 +45,6 @@ export const useAuthStore = defineStore('auth', () => {
                 localStorage.removeItem('token');
                 router.push({ name: 'home' });
                 console.log('Logged Out');
-                
             } catch (error) {
                 console.log(error.response);
             }

@@ -31,6 +31,7 @@ export const useSettingsStore = defineStore('settings', () => {
         }
         
         async function store(app){
+            errors.value = {};
             try {
                 const response = await axios.post(`${resource}`, app);
                 item.value = response.data.data;
@@ -41,6 +42,7 @@ export const useSettingsStore = defineStore('settings', () => {
         }
         
         async function update(id, app){
+            errors.value = {};
             try {
                 const response = await axios.post(`${resource}/${id}?_method=PATCH`, app);
                 item.value = response.data.data;
@@ -51,13 +53,19 @@ export const useSettingsStore = defineStore('settings', () => {
         }
         
         async function destroy(id){
-            console.log(id);
-            
             try {
                 const response = await axios.delete(`${resource}/${id}`);
                 console.log(response);
                 
                 item.value = id;
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
+        
+        async function click(id){
+            try {
+                const response = await axios.post(`${resource}/${id}/click`);
             } catch (error) {
                 console.log(error.response);
             }
@@ -72,6 +80,7 @@ export const useSettingsStore = defineStore('settings', () => {
             store,
             update,
             destroy,
+            click,
             collection,
             item,
             errors

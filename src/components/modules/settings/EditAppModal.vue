@@ -3,29 +3,30 @@
         <form @submit.prevent="update" class="w-[850px] bg-gray-50 rounded-lg">
             <div class="p-5 flex items-center justify-between border-b border-gray-300 w-full">
                 <div class="font-bold text-xl text-gray-600 w-full">
+                    <h2 class="font-bold mb-1 text-sm">Name <span class="text-red-500">*</span></h2>
                     <input type="text" v-model="name" id="" class="border border-gray-400 p-2 rounded-lg w-full" :class="{ 'border-red-500 border-2':errors && errors.name }">
                     <p v-if="errors && errors.name" class="text-red-500 text-sm italic font-normal">{{ errors.name[0] }}</p>
                 </div>
             </div>
             <div class="p-5 border-b border-gray-300 text-gray-700">
                 <div class="leading-4">
-                    <h2 class="font-bold mb-1">Description</h2>
+                    <h2 class="font-bold mb-1 text-sm">Description <span class="text-red-500">*</span></h2>
                     <textarea v-model="description" id="" class="w-full border h-28 border-gray-400 p-2 rounded-lg resize-none" :class="{ 'border-red-500 border-2':errors && errors.description }"></textarea>
                     <p v-if="errors && errors.description" class="text-red-500 text-sm italic font-normal">{{ errors.description[0] }}</p>
                 </div>
                 <div class="mt-3 leading-4">
-                    <h2 class="font-bold mb-1">Link</h2>
+                    <h2 class="font-bold mb-1 text-sm">Link <span class="text-red-500">*</span></h2>
                     <input type="text" v-model="link" id="" class="border border-gray-400 p-2 rounded-lg w-full" :class="{ 'border-red-500 border-2':errors && errors.link }">
                     <p v-if="errors && errors.link" class="text-red-500 text-sm italic font-normal">{{ errors.link[0] }}</p>
                 </div>
                 <div class="mt-3 leading-4">
-                    <h2 class="font-bold mb-1">Status</h2>
+                    <h2 class="font-bold mb-1 text-sm">Status <span class="text-red-500">*</span></h2>
                      <select v-model="status" id="" class="border border-gray-400 p-2 rounded-lg w-full">
                         <option v-for="(eachStatus, index) in statusName" :value="index">{{ eachStatus }}</option>
                      </select>
                 </div>
                 <div class="mt-3 leading-4">
-                    <h2 class="font-bold mb-1">Logo</h2>
+                    <h2 class="font-bold mb-1 text-sm">Logo</h2>
                     <input type="file" class="border border-gray-400 p-2 rounded-lg w-full" accept=".jpg,.jpeg,.png" @change="handleFileUpload">
                 </div>
             </div>

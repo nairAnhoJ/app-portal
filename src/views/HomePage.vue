@@ -36,11 +36,11 @@
                     </button>
                 </div>
 
-                <div v-if="!authStore.token">
-                    <RouterLink to="/login" class="group relative w-full aspect-square flex items-center justify-center bg-white rounded-lg shadow-lg shadow-gray-400 hover:scale-105 border z-50 text-gray-600 p-2">
+                <div v-if="!authStore.token" class="w-full aspect-square">
+                    <!-- <RouterLink to="/login" class="group relative w-full aspect-square flex items-center justify-center bg-white rounded-lg shadow-lg shadow-gray-400 hover:scale-105 border z-50 text-gray-600 p-2">
                         <iconLogin></iconLogin>
                         <Tooltip tooltipText='Login'></Tooltip>
-                    </RouterLink>
+                    </RouterLink> -->
                 </div>
             </div>
 
