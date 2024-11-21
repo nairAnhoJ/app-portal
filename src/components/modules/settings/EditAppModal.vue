@@ -77,7 +77,7 @@
 
             // Form Data
             const updatedItem = new FormData();
-            updatedItem.append('name', name.value);
+            updatedItem.append('name', name.value); 
             updatedItem.append('description', description.value);
             updatedItem.append('link', link.value);
             updatedItem.append('status', status.value);

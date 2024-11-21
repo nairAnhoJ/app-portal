@@ -13,10 +13,12 @@
                 Settings
             </h1>
             <div class="space-y-1">
-                <div class="h-10 flex items-center justify-between px-2">
+                <div class="h-16 flex items-center justify-between px-2 mb-2">
                     <h2 class="font-bold text-xl">App List</h2>
-                    <button @click="showAddAppModal" class="text-blue-500 h-full group">
-                        <iconPlusInCircle class="h-full"></iconPlusInCircle>
+                    <!-- <div class="z-40 absolute w-8 h-8 right-10 bg-blue-500 animate-ping rounded-full hover:animate-none"></div> -->
+                    <button @click="showAddAppModal" class="before:content-[''] before:z-40 before:block before:opacity-50 before:absolute before:left-[6px] before:bg-blue-500 before:animate-pulse2 before:w-9 before:h-9 before:rounded-full hover:before:animate-none hover:w-24 hover:px-4 duration-300 z-50 text-white h-12 w-12 group bg-blue-500 flex items-center justify-start rounded-full px-3 relative flex-nowrap after:content-[''] after:z-40 after:block after:opacity-30 after:absolute after:left-[6px] after:bg-blue-500 after:animate-pulse3 after:w-9 after:h-9 after:rounded-full hover:after:animate-none">
+                        <iconPlus class="h-6 w-6 z-50"></iconPlus>
+                        <p class="absolute opacity-0 group-hover:opacity-100 left-11 z-50 duration-200">Add</p>
                     </button>
                 </div>
                 <div class="relative h-96 overflow-hidden">
@@ -30,14 +32,14 @@
                             </thead>
                         </table>
                     </div>
-                    <div class="overflow-y-scroll max-h-[328px] rounded-t-lg mt-11">
+                    <div class="overflow-y-scroll max-h-[328px] rounded-t-lg mt-2">
                         <table class="w-full rounded-t-lg">
-                            <!-- <thead>
+                            <thead class="opacity-0">
                                 <tr class="bg-blue-500 text-white border-b border-neutral-300">
                                     <th class="text-left text-xl px-2 py-1">Name</th>
                                     <th class="text-xl w-96">Status</th>
                                 </tr>
-                            </thead> -->
+                            </thead>
                             <tbody class="">
                                 <tr v-if="!isLoaded">
                                     <th class="text-center p-2" colspan="3">
@@ -66,6 +68,7 @@
     import Loading from '@/components/LoadingFullScreen.vue';
     import Alert from '@/components/Alert.vue';
     import iconPlusInCircle from '@/components/icons/iconPlusInCircle.vue';
+    import iconPlus from '@/components/icons/iconPlus.vue';
     import iconBack from '@/components/icons/iconBack.vue';
     import { RouterLink } from 'vue-router';
 
